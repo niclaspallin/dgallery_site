@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+{% if album %}
+<h3>{{album.name}}</h3>
+
+<h4>Pictures:</h4>
+<ul>
+    {% for picture in picture_list %}
+    <li><img src="/media/{{picture.image}}" /></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Album not found.</p>
+{% endif %}
+
+{% endblock %}
