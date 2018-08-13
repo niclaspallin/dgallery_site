@@ -1,6 +1,6 @@
 ## Gallery Site with Django
 
-### Version:
+#### Versions:
 * Python 3.6.5
 * Django 2.0.7
 

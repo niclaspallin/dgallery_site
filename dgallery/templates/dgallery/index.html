@@ -1,25 +1,27 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+
 {% block carousel %}
-<div class="carousel z-carousel-poster">
 
     <div class="z-carousel-container">
-        {% for slide in carousel_slide_list %}
-        <ul>
-            <li></li>
+        <ul id="z-carousel-list">
+            {% for slide in carousel_slide_list %}
+            <li class="z-carousel-item fade">
+                <img src="/media/{{slide.image}}" alt="{{slide.image}}" />
+            </li>
+            {% endfor %}
         </ul>
-        <!-- <figure class="z-carousel-item">
-            <label class="item-prev btn btn-action btn-lg" for="slide-{{slide.previous}}"><i class="icon icon-arrow-left"></i></label>
-            <label class="item-next btn btn-action btn-lg" for="slide-{{slide.next}}"><i class="icon icon-arrow-right"></i></label><img class="img-responsive rounded" src="/media/{{slide.image}}" alt="{{slide.image}}}">
-        </figure>
-    -->
-        {% endfor %}
-    </div>
 
-    <div class="carousel-nav">
-        {% for slide in carousel_slide_list %}
-        <label class="nav-item text-hide c-hand" for="slide-{{slide.pk}}">{{pk}}</label>
-        {% endfor %}
-    </div>
+        <div style="text-align:center">
+            <span class="dot"></span> 
+            <span class="dot"></span> 
+            <span class="dot"></span> 
+        </div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'dgallery/js/carousel.js' %}"></script>
 {% endblock %}

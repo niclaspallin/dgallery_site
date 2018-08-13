@@ -11,8 +11,8 @@ class ThumbnailHelper():
         self.width = width
         self.height = height
 
-    def build(self, filepath):
-        return mark_safe("<img src='{}' width='{}' height='{}' />".format(os.path.join(settings.MEDIA_URL, filepath), self.width, self.height))
+    def build(self, thumbnail):
+        return mark_safe("<img src='{}' width='{}' height='{}' />".format(os.path.join(settings.MEDIA_URL, thumbnail), self.width, self.height))
 
 
 class PictureAdmin(admin.ModelAdmin):
@@ -27,9 +27,9 @@ class PictureAdmin(admin.ModelAdmin):
 
     readonly_fields = ['created_at', 'thumbnail']
 
-    def thumbnail(self, filepath):
+    def thumbnail(self, picture):
         thelper = ThumbnailHelper()
-        return thelper.build(filepath)
+        return thelper.build(picture.image.name)
     """
     def thumbnail(self, filpath):
         return mark_safe(
