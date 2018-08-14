@@ -1,33 +1,22 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block content %}
 
 {% if album %}
 <h3>{{album.name}}</h3>
 
-{% for picture in picture_list %}
-    <a href="#"><img src="/media/{{picture.image}}" class="z-picture" /></a>
-{% endfor %}
-
-<div class="modal modal-lg" id="modal">
-        <div class="modal active" id="modal-id">
-            <a href="#close" class="modal-overlay" aria-label="Close"></a>
-            <div class="modal-container">
-                <div class="modal-header">
-                <a href="#close" class="btn btn-clear float-right" aria-label="Close" id="close"></a>
-                <div class="modal-title h5">Modal title</div>
-                </div>
-                <div class="modal-body">
-                <div class="content">
-                    <!-- content here -->
-                    <img src="/media/uploads/2018/08/13/2017-10-04_18.12.04.jpg">
-                </div>
-                </div>
-                <div class="modal-footer">
-                <p>TEST Footer</p>
-                </div>
-            </div>
+<div class="columns col-gapless">
+    {% for picture in picture_list %}
+        <div class="column col-2">
+        <a href="#" class="click-me" data-value="/media/{{picture.image}}"><img src="/media/{{picture.image}}" class="img-fit-cover" width="200px" height="200px" /></a>
         </div>
+    {% endfor %}
+
+</div>
+
+<div class="z-modal" id="z-modal" />
+
 {% else %}
 <p>Album not found.</p>
 {% endif %}
@@ -35,19 +24,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-    var modal = document.getElementById('modal');
-    var closeBtn = document.getElementById('close');
-
-    closeBtn.addEventListener('click', function(ev) {
-        modal.classList.remove('active');
-    });
-
-    var pictures = document.getElementsByClassName('z-picture');
-    for(var i = 0; i < pictures.length; i++) {
-        pictures[i].addEventListener('click', function(ev) {
-            modal.classList.add('active');
-        });
-    }
-</script>
+<script src="{% static 'dgallery/js/vanilla_test.js' %}"></script>
 {% endblock %}
