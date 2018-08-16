@@ -5,6 +5,8 @@ class Album(models.Model):
     name = models.CharField(max_length=30)
     created_at = models.DateTimeField('Created', auto_now=True)
 
+    cover = models.ImageField(upload_to='album_covers', null=True, blank=True)
+
     def __str__(self):
         return self.name
 
