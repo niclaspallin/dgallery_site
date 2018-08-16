@@ -6,3 +6,4 @@ __pycache__
 *.pyc
 spectre-0.5.3/
 migrations
+sass

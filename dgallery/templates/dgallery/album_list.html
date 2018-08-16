@@ -4,11 +4,29 @@
 {% if object_list %}
 
 <div class="z-album-list">
+    <div class="columns">
     {% for album in object_list %}
-    <div class="z-album-list-item">
-        <a href="{% url 'dgallery:album-detail' album.id %}">{{album.name}}</a>
+        <div class="card column col-xs-12">
+            <div class="card-header">
+                <div class="card-title h5"> <a href="{% url 'dgallery:album-detail' album.id %}">{{album.name}}</a></div>
+                <div class="card-subtitle text-gray">Subtitle here</div>
+            </div>
+            <div class="card-body">
+            <div class="card-image">
+                {% if album.cover %}
+                    <img src="/media/{{album.cover}}" class="img-responsive z-album-thumbnail" />
+                {% endif %}
+            </div>
+        </div>
+            <!--
+            <div class="card-body">
+                <a href="{% url 'dgallery:album-detail' album.id %}">{{album.name}}</a>
+            </div>
+        -->
+          </div>
+
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% else %}
 <p>No Albums found.</p>
