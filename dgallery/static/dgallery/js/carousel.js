@@ -1,59 +1,76 @@
-(function() {
-    /**
-     * Fetch a list of html elements, where each child element is a slide. Then iterate with a set interval
-     */
-    var SLIDE_INTERVAL = 2500;
+class Carousel
+{
+    constructor() {
+        this.SLIDE_INTERVAL = 2500;
+        this.currentIndex = 0;
 
-    var $carouselUl = document.getElementById('z-carousel-list');
-    var $dotContainer = document.getElementById('z-dot-container');
-    var dotActiveClass = 'z-dot-active';
-    
-    var currentIndex = 0;
-    var numSlides = $carouselUl.children.length;
+        // Carousel
+        this.carouselElement = document.getElementById('z-carousel-list');
+        this.activeCarouselClass = 'z-carousel-active';
+        this.numSlides = this.carouselElement.children.length;
+        this.activeSlide = this.carouselElement.children[this.currentIndex];
 
-    
-    $dotContainer.innerHTML = createDots(dotActiveClass, numSlides);
+        // Dots
+        this.dotsContainerElement = document.getElementById('z-dot-container');
+        this.dotsActiveClass = 'z-dot-active';
 
-    var activeSlide = $carouselUl.children[currentIndex];
-    
-    activeSlide.classList.add('z-carousel-active');
+        this.setDots();
+    }
 
-    function createDots(activeClass, numSlides) {
-        var dots = '';
-        for(var i = 0; i < numSlides; i++) {
-            dots += '<div class="z-dot ' + (i == 0 ? activeClass : '') + '"></div>';
+    setDots() {
+        this.dotsContainerElement.innerHTML = this.createDots();
+    }
+
+    createDots() {
+        let dots = '';
+        for(let i = 0; i < this.numSlides; i++) {
+            dots += '<div class="z-dot ' + (i == 0 ? this.dotsActiveClass : '') + '"></div>';
         }
         return dots;
     }
-
-    function showSlides() {
-        if(++currentIndex > (numSlides - 1)) {
-            currentIndex = 0;
-        }
-
-        var nextSlideIndex = (currentIndex + 1) % numSlides;
-        activeSlide = nextSlide(activeSlide, nextSlideIndex, numSlides);
-        setActiveDot($dotContainer.children, nextSlideIndex);
-    }
-
-    function nextSlide(activeSlide, nextSlideIndex, numSlides) {
-        activeSlide.classList.remove('z-carousel-active');
-        
-        // Next slide
-        var nextSlide = $carouselUl.children[nextSlideIndex];
-        nextSlide.classList.add('z-carousel-active');
-        return nextSlide;
-    }
-
-    function setActiveDot(dots, activeIndex) {
-        for(var j = 0; j < dots.length; j++) {
-            if(j == activeIndex) {
-                dots[j].classList.add(dotActiveClass);
+    /**
+     * @param {number} index Index of the next dot to set as active
+     */
+    setActiveDotByIndex(index) {
+        let dots = this.dotsContainerElement.children;
+        for(let i = 0; i < dots.length; i++) {
+            if(i == index) {
+                dots[i].classList.add(this.dotsActiveClass);
             } else {
-                dots[j].classList.remove(dotActiveClass);
+                dots[i].classList.remove(this.dotsActiveClass);
             }
         }
     }
 
-    setInterval(showSlides, SLIDE_INTERVAL);
-})();
+    showSlides() {
+        
+        if(++this.currentIndex > (this.numSlides - 1)) {
+            this.currentIndex = 0;
+        }
+
+        let nextSlideIndex = (this.currentIndex + 1) % this.numSlides;
+        this.setSlideByIndex(nextSlideIndex);
+        this.setActiveDotByIndex(nextSlideIndex);
+    }
+    /**
+     * @param {number} index Index of the next slide to show
+     */
+    setSlideByIndex(index) {
+        this.activeSlide.classList.remove(this.activeCarouselClass);
+        
+        // Next slide
+        let nextSlide = this.carouselElement.children[index];
+        nextSlide.classList.add(this.activeCarouselClass);
+        this.activeSlide =  nextSlide;
+    }
+    /**
+     * Fetch a list of html elements, where each child element is a slide. Then iterate with a set interval
+     * @param {number} slideInterval (Optional) Interval of slide switching
+     */
+    run(slideInterval) {
+        setInterval(this.showSlides.bind(this), slideInterval || this.SLIDE_INTERVAL);
+    }
+}
+
+let carousel = new Carousel();
+carousel.run();

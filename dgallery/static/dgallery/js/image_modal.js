@@ -1,22 +1,41 @@
-(function() {
+class Modal
+{
+    /**
+     * @param {string} modalId Id of modal container
+     */
+    constructor(modalId) {
+        this.visibilityClass = 'z-modal-visible';
+        this.modalId = modalId || 'z-modal';
 
-    var modal = document.getElementById('z-modal');
-    var visibilityClass = 'z-modal-visible';
+        this.modalElement = document.getElementById(this.modalId);
+        this.modalElement.addEventListener('click', this.onModalClick.bind(this));
 
-
-    modal.addEventListener('click', function(event) {
-        modal.classList.remove(visibilityClass);
-    });
-
-    [].forEach.call(document.querySelectorAll('a.click-me'), function(el) {
-        el.addEventListener('click', function(event) {
-            event.preventDefault();
-            var imgSrc = this.getAttribute('data-value');
-            console.log('this', imgSrc);
-            modal.classList.add(visibilityClass);
-            //modal.style.display = 'block';
-            modal.innerHTML = '<div class="z-modal-body"><img src="' + imgSrc + '" style="max-height: 100%; max-width: 100%;" class="img-fit-contain"></div>';
+        [].forEach.call(document.querySelectorAll('a.click-me'), element => {
+            element.addEventListener('click', this.openModal.bind(this));
         });
-    })
+    }
 
-})();
+    onModalClick() {
+        this.modalElement.classList.remove(this.visibilityClass);
+    }
+
+    /**
+     * Set the contents of the modal, the body
+     * @param {string} modalBodyContent HTML that will remain inside the modal body, e.g. an image
+     */
+    setModalBody(modalBodyContent) {
+        this.modalElement.innerHTML = '<div class="z-modal-body">' + modalBodyContent + 
+        '<div class="z-modal-navigation"><button type="button" class="z-modal-btn-prev">&lt;</button>' + 
+        '<button type="button" class="z-modal-btn-next">&gt;</button></div></div>';
+    }
+
+    openModal() {
+        this.modalElement.classList.add(this.visibilityClass);
+
+        let imgSrc = this.getAttribute('data-value');
+        let content = '<img src="' + imgSrc + '" style="max-height: 100%; max-width: 100%;" class="img-fit-contain">';
+        this.setModalBody(content);
+    }
+}
+
+const modal = new Modal();
